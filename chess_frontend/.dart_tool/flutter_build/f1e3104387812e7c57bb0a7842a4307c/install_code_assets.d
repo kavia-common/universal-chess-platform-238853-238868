@@ -1,0 +1,1 @@
+ /home/kavia/workspace/code-generation/universal-chess-platform-238853-238868/chess_frontend/.dart_tool/flutter_build/f1e3104387812e7c57bb0a7842a4307c/native_assets.json: 
