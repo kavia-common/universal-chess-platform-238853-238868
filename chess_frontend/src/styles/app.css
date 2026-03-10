@@ -44,16 +44,22 @@
 .topNav {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .navLink {
   display: inline-flex;
+  align-items: center;
+  gap: 8px;
   padding: 8px 10px;
   border-radius: 10px;
   text-decoration: none;
   color: var(--muted);
-  font-weight: 600;
+  font-weight: 700;
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font: inherit;
 }
 
 .navLink:hover,
@@ -63,41 +69,160 @@
   background: rgba(59, 130, 246, 0.10);
 }
 
+.navLinkActive {
+  color: var(--text);
+  border: 1px solid rgba(59, 130, 246, 0.18);
+  background: rgba(59, 130, 246, 0.10);
+}
+
+.navPill {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(6, 182, 212, 0.18);
+  color: var(--text);
+}
+
 .appMain {
   flex: 1;
   display: grid;
-  grid-template-columns: 1fr 340px;
+  grid-template-columns: 1fr 360px;
   gap: 18px;
   padding: 18px;
-  max-width: 1200px;
+  max-width: 1240px;
   width: 100%;
   margin: 0 auto;
 }
 
 .boardArea {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 420px;
+  flex-direction: column;
+  gap: 12px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  padding: 18px;
+  padding: 14px;
 }
 
-.boardPlaceholder {
-  width: min(520px, 100%);
-  aspect-ratio: 1 / 1;
-  border-radius: 18px;
-  border: 2px dashed rgba(100, 116, 139, 0.35);
+.boardTopBar {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 2px 2px 8px 2px;
+  border-bottom: 1px solid var(--border);
+}
+
+.statusTitle {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+.statusText {
   color: var(--muted);
+  font-size: 14px;
   font-weight: 700;
-  text-align: center;
-  padding: 16px;
+}
+
+.boardShell {
+  width: min(560px, 100%);
+  align-self: center;
+}
+
+.boardGrid {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(17, 24, 39, 0.10);
+  box-shadow: 0 10px 16px rgba(17, 24, 39, 0.06);
+}
+
+.square {
+  position: relative;
+  display: grid;
+  place-items: center;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  font: inherit;
+}
+
+.square:focus-visible {
+  outline: 3px solid rgba(59, 130, 246, 0.45);
+  outline-offset: -3px;
+}
+
+.squareLight {
+  background: #f1f5f9;
+}
+
+.squareDark {
+  background: #94a3b8;
+}
+
+.piece {
+  font-size: clamp(26px, 5vw, 44px);
+  line-height: 1;
+  user-select: none;
+  filter: drop-shadow(0 4px 6px rgba(17, 24, 39, 0.12));
+}
+
+.coord {
+  position: absolute;
+  font-size: 11px;
+  font-weight: 800;
+  color: rgba(17, 24, 39, 0.55);
+  text-transform: uppercase;
+  user-select: none;
+}
+
+.coordFile {
+  bottom: 4px;
+  right: 6px;
+}
+
+.coordRank {
+  top: 4px;
+  left: 6px;
+}
+
+.squareSelected {
+  box-shadow: inset 0 0 0 4px rgba(59, 130, 246, 0.55);
+}
+
+.squareLastMove {
+  box-shadow: inset 0 0 0 4px rgba(6, 182, 212, 0.45);
+}
+
+.squareInCheck {
+  box-shadow: inset 0 0 0 4px rgba(239, 68, 68, 0.60);
+}
+
+.squareLegal {
+  box-shadow: inset 0 0 0 4px rgba(16, 185, 129, 0.25);
+}
+
+.targetDot {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.35);
+  box-shadow: inset 0 0 0 2px rgba(16, 185, 129, 0.25);
+}
+
+.boardBottomBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  padding-top: 6px;
 }
 
 .sidePanel {
@@ -115,7 +240,7 @@
 }
 
 .panelTitle {
-  margin: 0 0 8px 0;
+  margin: 0 0 10px 0;
   font-size: 16px;
 }
 
@@ -126,6 +251,368 @@
   font-size: 14px;
 }
 
+.hintText {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 10px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.label {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.select,
+.input {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(17, 24, 39, 0.12);
+  padding: 10px 12px;
+  background: #fff;
+  font: inherit;
+}
+
+.toggleRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+}
+
+.toggleRow input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+}
+
+.btn {
+  border: 1px solid rgba(17, 24, 39, 0.14);
+  background: #fff;
+  color: var(--text);
+  border-radius: 12px;
+  padding: 9px 12px;
+  font-weight: 800;
+  cursor: pointer;
+  font: inherit;
+}
+
+.btn:hover,
+.btn:focus-visible {
+  outline: none;
+  background: rgba(59, 130, 246, 0.06);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btnPrimary {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.18), rgba(6, 182, 212, 0.14));
+  border: 1px solid rgba(59, 130, 246, 0.25);
+}
+
+.btnSmall {
+  border: 1px solid rgba(17, 24, 39, 0.12);
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 12px;
+  padding: 8px 10px;
+  font-weight: 800;
+  cursor: pointer;
+  font: inherit;
+}
+
+.btnSmall:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.clockGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.clockCard {
+  border: 1px solid rgba(17, 24, 39, 0.12);
+  border-radius: 14px;
+  padding: 10px;
+  background: rgba(248, 250, 252, 0.9);
+}
+
+.clockCardActive {
+  border-color: rgba(59, 130, 246, 0.40);
+  box-shadow: 0 10px 18px rgba(59, 130, 246, 0.10);
+}
+
+.clockLabel {
+  color: var(--muted);
+  font-weight: 800;
+  font-size: 12px;
+}
+
+.clockValue {
+  font-weight: 900;
+  font-size: 22px;
+  margin-top: 6px;
+}
+
+.clockControls {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.moveList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.moveRow {
+  display: grid;
+  grid-template-columns: 42px 1fr 1fr;
+  gap: 8px;
+  align-items: center;
+}
+
+.moveNumber {
+  color: var(--muted);
+  font-weight: 900;
+  font-size: 13px;
+}
+
+.moveCell {
+  display: flex;
+}
+
+.moveBtn {
+  width: 100%;
+  text-align: left;
+  border: 1px solid rgba(17, 24, 39, 0.12);
+  background: #fff;
+  border-radius: 12px;
+  padding: 8px 10px;
+  font-weight: 800;
+  cursor: pointer;
+  font: inherit;
+}
+
+.moveBtnActive {
+  border-color: rgba(6, 182, 212, 0.45);
+  background: rgba(6, 182, 212, 0.10);
+}
+
+.movePlaceholder {
+  color: rgba(100, 116, 139, 0.8);
+  font-weight: 800;
+  padding: 8px 10px;
+}
+
+.moveNavRow {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.resultBox {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.resultHeadline {
+  font-weight: 900;
+  font-size: 16px;
+}
+
+.resultSub {
+  color: var(--muted);
+}
+
+.puzzleList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.puzzleListItem {
+  text-align: left;
+  border: 1px solid rgba(17, 24, 39, 0.12);
+  background: #fff;
+  border-radius: 14px;
+  padding: 12px;
+  cursor: pointer;
+  font: inherit;
+}
+
+.puzzleListItem:hover,
+.puzzleListItem:focus-visible {
+  outline: none;
+  background: rgba(59, 130, 246, 0.06);
+}
+
+.puzzleListItemActive {
+  border-color: rgba(59, 130, 246, 0.35);
+  background: rgba(59, 130, 246, 0.06);
+}
+
+.puzzleListTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-weight: 900;
+}
+
+.puzzleListMeta {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.puzzleMeta {
+  margin-top: 12px;
+  display: grid;
+  gap: 6px;
+}
+
+.puzzleMetaRow {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.muted {
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.puzzleStatus {
+  margin-top: 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.puzzleActionsRow {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 900;
+  border: 1px solid rgba(17, 24, 39, 0.12);
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.pillSuccess {
+  border-color: rgba(16, 185, 129, 0.35);
+  background: rgba(16, 185, 129, 0.12);
+}
+
+.statGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.statCard {
+  border: 1px solid rgba(17, 24, 39, 0.12);
+  border-radius: 14px;
+  padding: 12px;
+  background: rgba(248, 250, 252, 0.9);
+}
+
+.statValue {
+  font-weight: 900;
+  font-size: 22px;
+}
+
+.statLabel {
+  margin-top: 6px;
+  color: var(--muted);
+  font-weight: 800;
+  font-size: 12px;
+}
+
+.profileActions {
+  margin-top: 12px;
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  z-index: 50;
+}
+
+.modal {
+  width: min(520px, 100%);
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 14px 10px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.modalTitle {
+  font-weight: 900;
+  font-size: 16px;
+}
+
+.modalClose {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 18px;
+  color: rgba(15, 23, 42, 0.75);
+}
+
+.modalBody {
+  padding: 14px;
+}
+
+.modalActions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.promotionGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
 .appFooter {
   padding: 14px 20px;
   color: var(--muted);
@@ -133,8 +620,12 @@
   background: rgba(255, 255, 255, 0.6);
 }
 
-@media (max-width: 980px) {
+@media (max-width: 1040px) {
   .appMain {
     grid-template-columns: 1fr;
+  }
+
+  .boardShell {
+    width: min(520px, 100%);
   }
 }
